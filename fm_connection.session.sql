@@ -259,3 +259,29 @@ SELECT "is_male",
 FROM "users"
 WHERE AGE("birthday") BETWEEN MAKE_INTERVAL(20) AND MAKE_INTERVAL(30)
 GROUP BY "is_male";
+/* ----------------------------------------*/
+/* 1 */
+SELECT *
+FROM "users"
+ORDER BY "birthday" DESC,
+  "weight" ASC,
+  "height" DESC;
+/* 2 */
+SELECT *
+FROM "users"
+ORDER BY "lastname" ASC,
+  "firstname" ASC,
+  "id" DESC;
+/* 3 */
+SELECT "id",
+  CONCAT("firstname", ' ', "lastname") AS "Full name",
+  "email",
+  "birthday"
+FROM "users"
+ORDER BY CHAR_LENGTH("email");
+/* 4 */
+SELECT "is_male",
+ AVG("weight")
+FROM "users"
+WHERE "height" > 2
+GROUP BY "is_male";
