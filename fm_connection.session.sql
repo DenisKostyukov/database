@@ -175,9 +175,7 @@ ALTER TABLE "coach"
 ADD COLUMN "team_id" INTEGER REFERENCES "teams"("id");
 /* */
 SELECT *
-FROM "users"
-WHERE "is_male" = TRUE
-  AND "id" % 2 = 1;
+FROM "users";
 /* */
 UPDATE "users"
 SET "height" = 1.75
@@ -185,39 +183,32 @@ SET "height" = 1.75
 UPDATE "users"
 SET "height" = 1.9
 WHERE "id" % 2 = 0
-
   /* 1 */
 SELECT *
 FROM "users"
 WHERE "is_male" = TRUE
-
   /* 2 */
 SELECT *
 FROM "users"
 WHERE "is_male" = FALSE
-
   /* 3 */
 SELECT *
 FROM "users"
 WHERE AGE("birthday") > MAKE_INTERVAL(30)
-
   /* 4 */
 SELECT *
 FROM "users"
 WHERE "is_male" = FALSE
   AND AGE("birthday") > MAKE_INTERVAL(30)
-
   /* 5 */
 SELECT *
 FROM "users"
 WHERE AGE("birthday") BETWEEN MAKE_INTERVAL(20) AND MAKE_INTERVAL(40)
-
   /* 6 */
 SELECT *
 FROM "users"
 WHERE AGE("birthday") > MAKE_INTERVAL(20)
   AND "height" > 1.8
-
   /* 7 */
 SELECT *
 FROM "users"
@@ -225,7 +216,6 @@ WHERE EXTRACT(
     month
     from "birthday"
   ) = 9;
-
 /* 8 */
 SELECT *
 FROM "users"
@@ -237,9 +227,35 @@ WHERE EXTRACT(
     month
     from "birthday"
   ) = 11;
-
 /* 9 */
 DELETE FROM "users"
 WHERE AGE("birthday") < MAKE_INTERVAL(30)
-
-SELECT "id", "firstname", "lastname", "email" FROM "users" 
+  /*PAGINATION*/
+SELECT "id",
+  CONCAT("firstname", ' ', "lastname") AS "Full name",
+  "email"
+FROM "users"
+LIMIT 15 OFFSET 15;
+/* */
+SELECT "is_male",
+  MIN("height") AS "min height",
+  MAX("height") AS "max height",
+  AVG("height") AS "avg height"
+FROM "users"
+GROUP BY "is_male";
+/* */
+SELECT COUNT("id")
+FROM "users"
+WHERE "birthday" = '1970-01-01';
+/* */
+SELECT "firstname",
+  COUNT("id") AS "count"
+FROM "users"
+WHERE "firstname" IN('Sophia', 'Arno', 'Don')
+GROUP BY "firstname";
+/* */
+SELECT "is_male",
+  COUNT("id") AS "count"
+FROM "users"
+WHERE AGE("birthday") BETWEEN MAKE_INTERVAL(20) AND MAKE_INTERVAL(30)
+GROUP BY "is_male";

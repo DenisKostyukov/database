@@ -16,9 +16,16 @@ class User {
       height NUMERIC(3, 2) CHECK(
         height > 0.2
         AND height < 3
+      ),
+      "weight" NUMERIC(5, 2) CHECK(
+        "weight" BETWEEN 1 AND 500
       )
     );
     `);
+  }
+
+  static async dropTableIfExists () {
+    return await this._client.query(`DROP TABLE IF EXISTS "${this._tableName}" CASCADE;`);
   }
 
   static async findAll () {
@@ -27,10 +34,25 @@ class User {
 
   static async bulkCreate (users) {
     return await this._client.query(
-      `INSERT INTO "users" ("firstname", "lastname", "email", "is_male", "birthday")
+      `INSERT INTO "${
+        this._tableName
+      }" ("firstname", "lastname", "email", "is_male", "birthday", "height", "weight")
        VALUES ${extractUsers(users)}
       `
     );
+  }
+  
+  static async deleteById (id) {
+    return await this._client.query(
+      `DELETE FROM "${this._tableName}"
+       WHERE "id" = ${id}
+       RETURNING *;
+      `
+    );
+  }
+
+  static async truncateTable () {
+    return await this._client.query(`TRUNCATE ${this._tableName}`);
   }
 }
 
