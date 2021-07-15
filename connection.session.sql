@@ -237,9 +237,10 @@ SELECT "id",
   "lastname",
   "email"
 FROM "users";
- /*Homework */
+/*Homework */
 SELECT "id" AS "Номер",
   CONCAT("firstname", ' ', "lastname") AS "Полное имя",
   "email" AS "E-mail"
-  FROM "users"
+FROM "users"
 WHERE CHAR_LENGTH(CONCAT("firstname", ' ', "lastname")) > 15;
+/*--------------------------SQL HW20210715 -------------------------*/
