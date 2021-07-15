@@ -33,15 +33,16 @@ class User {
   }
 
   static async bulkCreate (users) {
-    return await this._client.query(
+    const { rows } = await this._client.query(
       `INSERT INTO "${
         this._tableName
       }" ("firstname", "lastname", "email", "is_male", "birthday", "height", "weight")
        VALUES ${extractUsers(users)}
+       RETURNING *;
       `
     );
+    return rows;
   }
-  
   static async deleteById (id) {
     return await this._client.query(
       `DELETE FROM "${this._tableName}"
