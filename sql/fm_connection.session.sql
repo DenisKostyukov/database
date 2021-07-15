@@ -274,14 +274,29 @@ ORDER BY "lastname" ASC,
   "id" DESC;
 /* 3 */
 SELECT "id",
-  CONCAT("firstname", ' ', "lastname") AS "Full name",
+  CONCAT("firstname", ' ', "lastname") AS "full_name",
   "email",
   "birthday"
 FROM "users"
 ORDER BY CHAR_LENGTH("email");
 /* 4 */
 SELECT "is_male",
- AVG("weight")
+  AVG("weight")
 FROM "users"
 WHERE "height" > 2
 GROUP BY "is_male";
+/* ------------------------------------------ */
+SELECT "brand",
+  SUM("quantity")
+FROM "phones"
+GROUP BY "brand"
+HAVING SUM("quantity") > 3000;
+/* */
+SELECT "age",
+  COUNT("id") AS "count"
+FROM (SELECT EXTRACT(
+    "year"
+    from AGE("birthday")
+  ) AS "age", * FROM "users") AS "users"
+GROUP BY age
+HAVING COUNT("id") > 5;
