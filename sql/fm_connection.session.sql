@@ -294,9 +294,43 @@ HAVING SUM("quantity") > 3000;
 /* */
 SELECT "age",
   COUNT("id") AS "count"
-FROM (SELECT EXTRACT(
-    "year"
-    from AGE("birthday")
-  ) AS "age", * FROM "users") AS "users"
+FROM (
+    SELECT EXTRACT(
+        "year"
+        from AGE("birthday")
+      ) AS "age",
+      *
+    FROM "users"
+  ) AS "users"
 GROUP BY age
 HAVING COUNT("id") > 5;
+/* -------------------------------*/
+SELECT "firstname"
+FROM "users"
+WHERE "firstname" ~ 'M.*e{2}.*n';
+/* */
+SELECT o.id, o."createdAt", p.brand FROM orders AS o
+JOIN phones_to_orders AS pto 
+ON o.id = pto."orderId"
+JOIN phones AS p ON pto."phoneId" = p."id"
+WHERE p."brand" = 'Samsung';
+/* */
+
+SELECT o.id, o."createdAt", SUM(pto.quantity)
+FROM "orders" AS "o"
+JOIN "phones_to_orders" AS pto ON pto."orderId" = o.id
+GROUP BY o.id
+ORDER BY o.id;
+/* */
+SELECT u.firstname, COUNT(o."userId") from "users" AS u
+JOIN orders AS o ON u.id = o."userId"
+GROUP BY u.firstname;
+
+/* */
+SELECT u.firstname, u.email FROM "users" AS "u"
+JOIN orders AS "o" ON o."userId" = u.id
+JOIN phones_to_orders AS pto ON o.id = pto."orderId"
+JOIN phones AS p ON pto."phoneId" = p.id
+WHERE p.brand = 'Honor'
+GROUP BY u.firstname, u.email;
+

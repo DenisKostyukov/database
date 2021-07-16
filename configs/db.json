@@ -1,7 +1,7 @@
 {
   "user": "postgres",
-  "password": "denxbr23",
+  "password": "postgres",
   "host": "localhost",
   "port": 5432,
-  "database": "main_database"
+  "database": "fm_db"
 }
